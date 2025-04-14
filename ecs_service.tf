@@ -9,6 +9,14 @@ resource "aws_ecs_service" "ecs_service" {
   desired_count   = var.service_task_count
   # launch_type     = var.service_launch_type
 
+  dynamic "service_registries" {
+    for_each = var.sd_namespace != null ? [0] : []
+    content {
+      registry_arn   = aws_service_discovery_service.sd_service[0].arn
+      container_name = var.service_name
+    }
+  }
+
   deployment_maximum_percent         = 200
   deployment_minimum_healthy_percent = 100
 

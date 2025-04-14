@@ -242,3 +242,9 @@ variable "efs_volumes" {
   }))
   default = []
 }
+
+variable "sd_namespace" {
+  description = "The service discovery namespace"
+  type        = string
+  default     = null
+}

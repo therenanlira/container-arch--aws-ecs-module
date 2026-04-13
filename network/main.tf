@@ -8,17 +8,17 @@ resource "aws_vpc" "main" {
   enable_dns_support   = true
   enable_dns_hostnames = true
 
-  tags = {
+  tags = merge(local.tags, {
     Name = "${local.name_prefix}-vpc"
-  }
+  })
 }
 
 resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
 
-  tags = {
+  tags = merge(local.tags, {
     Name = "${local.name_prefix}-igw"
-  }
+  })
 }
 
 resource "aws_eip" "eip" {
@@ -26,9 +26,9 @@ resource "aws_eip" "eip" {
 
   domain = "vpc"
 
-  tags = {
+  tags = merge(local.tags, {
     Name = "${local.name_prefix}-eip-${each.key}"
-  }
+  })
 }
 
 resource "aws_nat_gateway" "natgw" {
@@ -37,7 +37,7 @@ resource "aws_nat_gateway" "natgw" {
   allocation_id = aws_eip.eip[each.key].id
   subnet_id     = aws_subnet.these_public[each.key].id
 
-  tags = {
+  tags = merge(local.tags, {
     Name = "${local.name_prefix}-natgw-${each.key}"
-  }
+  })
 }

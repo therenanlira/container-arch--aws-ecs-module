@@ -53,4 +53,8 @@ resource "aws_ecs_capacity_provider" "these" {
       target_capacity           = 90
     }
   }
+
+  tags = merge(local.tags, {
+    Name = "${terraform.workspace}--${var.project_name}--${replace(each.value, "_", "-")}--cp"
+  })
 }

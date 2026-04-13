@@ -34,6 +34,10 @@ resource "aws_launch_template" "these" {
     }
   }
 
+  user_data = base64encode(templatefile(var.user_data_template, {
+    ECS_CLUSTER = aws_ecs_cluster.main.name
+  }))
+
   tag_specifications {
     resource_type = "instance"
     tags = merge(local.tags, {
@@ -41,7 +45,7 @@ resource "aws_launch_template" "these" {
     })
   }
 
-  user_data = base64encode(templatefile(var.user_data_template, {
-    ECS_CLUSTER = aws_ecs_cluster.main.name
-  }))
+  tags = merge(local.tags, {
+    Name = "${terraform.workspace}--${var.project_name}--${replace(each.value, "_", "-")}--lt"
+  })
 }

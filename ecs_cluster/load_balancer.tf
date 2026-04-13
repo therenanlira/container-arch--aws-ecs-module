@@ -7,9 +7,9 @@ resource "aws_security_group" "load_balancer" {
 
   vpc_id = var.network_conf.vpc_id
 
-  tags = {
+  tags = merge(local.tags, {
     Name = "${terraform.workspace}--${var.project_name}--lb-sg"
-  }
+  })
 }
 
 resource "aws_vpc_security_group_egress_rule" "load_balancer_outbound_all" {
@@ -20,9 +20,9 @@ resource "aws_vpc_security_group_egress_rule" "load_balancer_outbound_all" {
   ip_protocol = "tcp"
   cidr_ipv4   = "0.0.0.0/0"
 
-  tags = {
+  tags = merge(local.tags, {
     Name = "${terraform.workspace}--${var.project_name}--lb-sg outbound all"
-  }
+  })
 }
 
 resource "aws_vpc_security_group_ingress_rule" "load_balancer_inbound_http" {
@@ -33,9 +33,9 @@ resource "aws_vpc_security_group_ingress_rule" "load_balancer_inbound_http" {
   ip_protocol = "tcp"
   cidr_ipv4   = "0.0.0.0/0"
 
-  tags = {
+  tags = merge(local.tags, {
     Name = "${terraform.workspace}--${var.project_name}--lb-sg inbound http"
-  }
+  })
 }
 
 resource "aws_vpc_security_group_ingress_rule" "load_balancer_inbound_https" {

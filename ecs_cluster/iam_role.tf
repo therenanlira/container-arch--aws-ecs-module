@@ -12,9 +12,9 @@ resource "aws_iam_role" "ecs_role" {
     }]
   })
 
-  tags = {
+  tags = merge(local.tags, {
     Name = substr("${terraform.workspace}--${var.project_name}--ecs-role", 0, 63)
-  }
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "ec2_role" {
@@ -31,7 +31,7 @@ resource "aws_iam_instance_profile" "ecs_role" {
   name = substr("${terraform.workspace}--${var.project_name}--instance-profile", 0, 63)
   role = aws_iam_role.ecs_role.name
 
-  tags = {
+  tags = merge(local.tags, {
     Name = substr("${terraform.workspace}--${var.project_name}--instance-profile", 0, 63)
-  }
+  })
 }

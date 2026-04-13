@@ -36,9 +36,9 @@ resource "aws_launch_template" "these" {
 
   tag_specifications {
     resource_type = "instance"
-    tags = {
+    tags = merge(local.tags, {
       Name = "${terraform.workspace}--${var.project_name}--${replace(each.value, "_", "-")}--lt"
-    }
+    })
   }
 
   user_data = base64encode(templatefile(var.user_data_template, {

@@ -46,9 +46,9 @@ resource "aws_vpc_security_group_ingress_rule" "load_balancer_inbound_https" {
   ip_protocol = "tcp"
   cidr_ipv4   = "0.0.0.0/0"
 
-  tags = {
+  tags = merge(local.tags, {
     Name = "${terraform.workspace}--${var.project_name}--lb-sg inbound https"
-  }
+  })
 }
 
 ########################################
@@ -67,9 +67,9 @@ resource "aws_lb" "main" {
   enable_cross_zone_load_balancing = false
   enable_deletion_protection       = false
 
-  tags = {
+  tags = merge(local.tags, {
     Name = "${terraform.workspace}--${var.project_name}--lb"
-  }
+  })
 }
 
 resource "aws_lb_listener" "main" {
@@ -88,7 +88,7 @@ resource "aws_lb_listener" "main" {
     }
   }
 
-  tags = {
+  tags = merge(local.tags, {
     Name = "${terraform.workspace}--${var.project_name}--lb-listener"
-  }
+  })
 }

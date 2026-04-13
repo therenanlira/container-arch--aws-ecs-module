@@ -3,9 +3,9 @@ resource "aws_security_group" "ecs_cluster" {
 
   vpc_id = var.network_conf.vpc_id
 
-  tags = {
+  tags = merge(local.tags, {
     Name = "${terraform.workspace}--${var.project_name}--ecs-sg"
-  }
+  })
 }
 
 resource "aws_vpc_security_group_egress_rule" "ecs_cluster_outbound_all" {
@@ -16,9 +16,9 @@ resource "aws_vpc_security_group_egress_rule" "ecs_cluster_outbound_all" {
   ip_protocol = "tcp"
   cidr_ipv4   = "0.0.0.0/0"
 
-  tags = {
+  tags = merge(local.tags, {
     Name = "${terraform.workspace}--${var.project_name}--ecs-sg outbound all"
-  }
+  })
 }
 
 resource "aws_vpc_security_group_ingress_rule" "ecs_cluster_inbound_all_vpc" {
@@ -27,7 +27,7 @@ resource "aws_vpc_security_group_ingress_rule" "ecs_cluster_inbound_all_vpc" {
   ip_protocol = "-1"
   cidr_ipv4   = var.network_conf.vpc_cidr_block
 
-  tags = {
+  tags = merge(local.tags, {
     Name = "${terraform.workspace}--${var.project_name}--ecs-sg inbound all from VPC"
-  }
+  })
 }

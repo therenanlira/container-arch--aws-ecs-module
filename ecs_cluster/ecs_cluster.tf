@@ -6,7 +6,7 @@ resource "aws_ecs_cluster" "main" {
     value = "disabled"
   }
 
-  tags = {
+  tags = merge(local.tags, {
     Name = "${terraform.workspace}--${var.project_name}--ecs-cluster"
-  }
+  })
 }

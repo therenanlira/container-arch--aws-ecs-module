@@ -1,6 +1,4 @@
-########################################
-########### VPC and IGW
-########################################
+# VPC and IGW
 
 resource "aws_vpc" "main" {
   cidr_block = var.cidr_block

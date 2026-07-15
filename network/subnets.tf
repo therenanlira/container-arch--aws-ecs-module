@@ -1,13 +1,11 @@
-########################################
-###### Private, Public and Data Subnets
-########################################
+# Private, Public and Data Subnets
 
 resource "aws_subnet" "these_private" {
   for_each = local.vpc_azs
 
   vpc_id            = aws_vpc.main.id
   availability_zone = each.key
-  cidr_block        = cidrsubnet(local.subnet_private_blocks, 4, index(data.aws_availability_zones.available.names, each.key))
+  cidr_block        = cidrsubnet(local.subnet_private_blocks, 2, index(data.aws_availability_zones.available.names, each.key))
 
   tags = merge(local.tags, {
     Name = "${local.name_prefix}-private-subnet-${each.key}"

@@ -1,6 +1,4 @@
-########################################
-###### Private and Data Route Tables
-########################################
+# Private and Data Route Tables
 
 resource "aws_route_table" "private" {
   for_each = local.vpc_azs
@@ -34,9 +32,7 @@ resource "aws_route_table_association" "data_rta" {
   route_table_id = aws_route_table.private[each.key].id
 }
 
-########################################
-###### Public Route Tables
-########################################
+# Public Route Tables
 
 resource "aws_route_table" "public" {
   for_each = local.vpc_azs

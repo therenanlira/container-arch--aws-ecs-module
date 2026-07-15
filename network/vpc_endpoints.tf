@@ -1,6 +1,4 @@
-########################################
-###### VPC Gateway Endpoints
-########################################
+# VPC Gateway Endpoints
 
 resource "aws_vpc_endpoint" "these" {
   for_each = toset(var.vpce_gateways)

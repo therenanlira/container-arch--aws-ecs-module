@@ -1,6 +1,4 @@
-########################################
-########### General
-########################################
+# General
 
 variable "project_name" {
   description = "The name of the project, used for tagging and naming resources."
@@ -12,9 +10,7 @@ variable "environment" {
   type        = string
 }
 
-########################################
-########### Network
-########################################
+# Network
 
 variable "cidr_block" {
   description = "The CIDR block for the VPC."

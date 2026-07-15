@@ -1,7 +1,4 @@
-########################################
-########### Variables
-########################################
-
+# Variables
 output "project_name" {
   description = "The name of the project, used for tagging and naming resources."
   value       = var.project_name
@@ -22,9 +19,7 @@ output "vpce_gateways" {
   value       = var.vpce_gateways
 }
 
-########################################
-########### Network
-########################################
+# Network
 
 output "vpc_id" {
   value = aws_vpc.main.id

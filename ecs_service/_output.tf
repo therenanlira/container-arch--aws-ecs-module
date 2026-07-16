@@ -1,34 +1,53 @@
-########################################
-########### Variables
-########################################
+# Variables
 
 output "network_values" {
-  description = "The network configuration for the ECS cluster"
-  value       = var.network_values
+  value = var.network_values
+}
+
+output "project_name" {
+  value = var.project_name
 }
 
 output "cluster_name" {
-  description = "The ARN of the ECS cluster where the service is deployed"
-  value       = var.cluster_name
+  value = var.cluster_name
 }
 
 output "service_name" {
-  description = "The name of the ECS service"
-  value       = var.service_name
+  value = var.service_name
 }
 
 output "service_port" {
-  description = "The port on which the service is listening"
-  value       = var.service_port
+  value = var.service_port
 }
 
 output "service_cpu" {
-  description = "The number of CPU units reserved for the service"
-  value       = var.service_cpu
+  value = var.service_cpu
 }
 
 output "service_mem" {
-  description = "The amount of memory (in MiB) reserved for the service"
-  value       = var.service_mem
+  value = var.service_mem
 }
 
+output "service_healthcheck" {
+  value = var.service_healthcheck
+}
+
+output "service_launch_type" {
+  value = var.service_launch_type
+}
+
+output "service_task_count" {
+  value = var.service_task_count
+}
+
+output "service_hosts" {
+  value = var.service_hosts
+}
+
+output "capabilities" {
+  value = var.capabilities
+}
+
+output "environment_variables" {
+  value = var.environment_variables
+}

@@ -42,12 +42,12 @@ resource "aws_launch_template" "these" {
 
   tag_specifications {
     resource_type = "instance"
-    tags = merge(local.tags, {
+    tags = {
       Name = "${local.name_prefix}-${replace(each.value, "_", "-")}--lt"
-    })
+    }
   }
 
-  tags = merge(local.tags, {
+  tags = {
     Name = "${local.name_prefix}-${replace(each.value, "_", "-")}--lt"
-  })
+  }
 }

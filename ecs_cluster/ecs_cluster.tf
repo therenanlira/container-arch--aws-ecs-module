@@ -8,9 +8,9 @@ resource "aws_ecs_cluster" "main" {
     value = "disabled"
   }
 
-  tags = merge(local.tags, {
+  tags = {
     Name = "${local.name_prefix}-ecs-cluster"
-  })
+  }
 }
 
 resource "aws_ecs_cluster_capacity_providers" "main" {
@@ -37,22 +37,20 @@ resource "aws_security_group" "ecs_cluster" {
 
   vpc_id = var.network_values.vpc_id
 
-  tags = merge(local.tags, {
+  tags = {
     Name = "${local.name_prefix}-ecs-sg"
-  })
+  }
 }
 
 resource "aws_vpc_security_group_egress_rule" "ecs_cluster_outbound_all" {
   security_group_id = aws_security_group.ecs_cluster.id
 
-  from_port   = 0
-  to_port     = 0
-  ip_protocol = "tcp"
+  ip_protocol = "-1"
   cidr_ipv4   = "0.0.0.0/0"
 
-  tags = merge(local.tags, {
+  tags = {
     Name = "${local.name_prefix}-ecs-sg outbound all"
-  })
+  }
 }
 
 resource "aws_vpc_security_group_ingress_rule" "ecs_cluster_inbound_all_vpc" {
@@ -61,9 +59,9 @@ resource "aws_vpc_security_group_ingress_rule" "ecs_cluster_inbound_all_vpc" {
   ip_protocol = "-1"
   cidr_ipv4   = var.network_values.vpc_cidr_block
 
-  tags = merge(local.tags, {
+  tags = {
     Name = "${local.name_prefix}-ecs-sg inbound all from VPC"
-  })
+  }
 }
 
 # ECS IAM Role
@@ -82,9 +80,9 @@ resource "aws_iam_role" "ecs_role" {
     }]
   })
 
-  tags = merge(local.tags, {
+  tags = {
     Name = substr("${local.name_prefix}-ecs-role", 0, 63)
-  })
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "ec2_role" {
@@ -101,7 +99,7 @@ resource "aws_iam_instance_profile" "ecs_role" {
   name = substr("${local.name_prefix}-instance-profile", 0, 63)
   role = aws_iam_role.ecs_role.name
 
-  tags = merge(local.tags, {
+  tags = {
     Name = substr("${local.name_prefix}-instance-profile", 0, 63)
-  })
+  }
 }

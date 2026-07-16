@@ -31,12 +31,18 @@ resource "aws_autoscaling_group" "these" {
   }
 
   dynamic "tag" {
-    for_each = local.tags
+    for_each = local.asg_tags
     content {
       key                 = tag.key
       value               = tag.value
       propagate_at_launch = true
     }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      desired_capacity
+    ]
   }
 }
 
@@ -56,7 +62,7 @@ resource "aws_ecs_capacity_provider" "these" {
     }
   }
 
-  tags = merge(local.tags, {
+  tags = {
     Name = "${local.name_prefix}-${replace(each.value, "_", "-")}--cp"
-  })
+  }
 }

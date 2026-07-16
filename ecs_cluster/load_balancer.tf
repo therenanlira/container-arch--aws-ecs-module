@@ -12,9 +12,9 @@ resource "aws_lb" "main" {
   enable_cross_zone_load_balancing = false
   enable_deletion_protection       = false
 
-  tags = merge(local.tags, {
+  tags = {
     Name = "${local.name_prefix}-lb"
-  })
+  }
 }
 
 resource "aws_lb_listener" "main" {
@@ -33,9 +33,9 @@ resource "aws_lb_listener" "main" {
     }
   }
 
-  tags = merge(local.tags, {
+  tags = {
     Name = "${local.name_prefix}-lb-listener"
-  })
+  }
 }
 
 # Load Balancer Security Group
@@ -45,22 +45,20 @@ resource "aws_security_group" "load_balancer" {
 
   vpc_id = var.network_values.vpc_id
 
-  tags = merge(local.tags, {
+  tags = {
     Name = "${local.name_prefix}-lb-sg"
-  })
+  }
 }
 
 resource "aws_vpc_security_group_egress_rule" "load_balancer_outbound_all" {
   security_group_id = aws_security_group.load_balancer.id
 
-  from_port   = 0
-  to_port     = 0
-  ip_protocol = "tcp"
+  ip_protocol = "-1"
   cidr_ipv4   = "0.0.0.0/0"
 
-  tags = merge(local.tags, {
+  tags = {
     Name = "${local.name_prefix}-lb-sg outbound all"
-  })
+  }
 }
 
 resource "aws_vpc_security_group_ingress_rule" "load_balancer_inbound_http" {
@@ -71,9 +69,9 @@ resource "aws_vpc_security_group_ingress_rule" "load_balancer_inbound_http" {
   ip_protocol = "tcp"
   cidr_ipv4   = "0.0.0.0/0"
 
-  tags = merge(local.tags, {
+  tags = {
     Name = "${local.name_prefix}-lb-sg inbound http"
-  })
+  }
 }
 
 resource "aws_vpc_security_group_ingress_rule" "load_balancer_inbound_https" {
@@ -84,7 +82,7 @@ resource "aws_vpc_security_group_ingress_rule" "load_balancer_inbound_https" {
   ip_protocol = "tcp"
   cidr_ipv4   = "0.0.0.0/0"
 
-  tags = merge(local.tags, {
+  tags = {
     Name = "${local.name_prefix}-lb-sg inbound https"
-  })
+  }
 }

@@ -4,7 +4,7 @@ data "external" "ecr_latest_image" {
   program = ["bash", "${path.module}/scripts/check_ecr_latest_tag.sh"]
 
   query = {
-    repository_name = aws_ecr_repository.main.name
+    repository_name = module.ecr_repository.name
   }
 }
 
@@ -12,17 +12,10 @@ locals {
   default_app_image_tag = data.external.ecr_latest_image.result.tag
 }
 
-resource "aws_ecr_repository" "main" {
-  name         = trimsuffix(local.name_prefix, "-")
-  force_delete = true
+module "ecr_repository" {
+  source = "../ecr_repository"
 
-  image_scanning_configuration {
-    scan_on_push = true
-  }
-
-  tags = merge(local.tags, {
-    Name = trimsuffix(local.name_prefix, "-")
-  })
+  service_name = var.service_name
 }
 
 # Task Definition
@@ -41,7 +34,7 @@ resource "aws_ecs_task_definition" "main" {
 
   container_definitions = jsonencode([{
     name   = var.service_name
-    image  = "${aws_ecr_repository.main.repository_url}:${local.default_app_image_tag}"
+    image  = "${module.ecr_repository.repository_url}:${local.default_app_image_tag}"
     cpu    = var.service_cpu
     memory = var.service_mem
 

@@ -32,6 +32,20 @@ resource "aws_ecs_task_definition" "main" {
   execution_role_arn = aws_iam_role.ecs_service_execution_role.arn
   task_role_arn      = aws_iam_role.ecs_task_execution_role.arn
 
+
+  dynamic "volume" {
+    for_each = var.efs_volumes
+    content {
+      name = volume.value.volume_name
+
+      efs_volume_configuration {
+        file_system_id     = volume.value.file_system_id
+        root_directory     = volume.value.file_system_root
+        transit_encryption = "ENABLED"
+      }
+    }
+  }
+
   container_definitions = jsonencode([{
     name   = var.service_name
     image  = "${module.ecr_repository.repository_url}:${local.default_app_image_tag}"
@@ -54,6 +68,14 @@ resource "aws_ecs_task_definition" "main" {
         awslogs-stream-prefix = var.service_name
       }
     }
+
+    mountPoints = [
+      for volume in var.efs_volumes : {
+        sourceVolume  = volume.volume_name
+        containerPath = volume.mount_point
+        readOnly      = volume.read_only
+      }
+    ]
 
     environment = var.environment_variables
   }])

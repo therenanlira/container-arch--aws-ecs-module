@@ -177,3 +177,17 @@ variable "environment_variables" {
   description = "A list of map containing the environemnt variables"
   type        = list(map(string))
 }
+
+# EFS
+
+variable "efs_volumes" {
+  description = "A list with the EFS Arn volumes to be attached to the ECS Services"
+  type = list(object({
+    volume_name      = string
+    file_system_id   = string
+    file_system_root = string
+    mount_point      = string
+    read_only        = bool
+  }))
+  default = []
+}

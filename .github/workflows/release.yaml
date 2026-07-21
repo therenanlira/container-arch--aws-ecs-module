@@ -1,6 +1,9 @@
 name: Release
 
 on:
+  # PRs get the same validation as a pre-merge check, but never cut a release.
+  pull_request:
+    branches: [main]
   push:
     branches: [main]
 
@@ -8,12 +11,38 @@ permissions:
   contents: write
 
 jobs:
+  discover:
+    name: Discover Modules
+    runs-on: ubuntu-latest
+    outputs:
+      modules: ${{ steps.list.outputs.modules }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: List module directories
+        id: list
+        # A "module" is any top-level directory with at least one .tf file at
+        # its root. New modules (e.g. efs_storage) are picked up automatically
+        # — nothing to update here when one is added.
+        run: |
+          MODULES=$(for dir in */; do
+            dir="${dir%/}"
+            if compgen -G "$dir"/*.tf > /dev/null; then
+              echo "$dir"
+            fi
+          done | sort | jq -R -s -c 'split("\n") | map(select(length > 0))')
+
+          echo "Modules found: $MODULES"
+          echo "modules=$MODULES" >> "$GITHUB_OUTPUT"
+
   validate:
     name: Validate Modules
     runs-on: ubuntu-latest
+    needs: [discover]
     strategy:
+      fail-fast: false
       matrix:
-        module: [network, ecs_cluster, ecs_service, ecr_repository]
+        module: ${{ fromJSON(needs.discover.outputs.modules) }}
     defaults:
       run:
         working-directory: ${{ matrix.module }}
@@ -40,6 +69,8 @@ jobs:
     name: Create Release
     runs-on: ubuntu-latest
     needs: [validate]
+    # Only push/merge to main cuts a release; PR runs stop at validation.
+    if: github.event_name == 'push'
     steps:
       - uses: actions/checkout@v5
         with:

@@ -8,6 +8,7 @@ variable "service_name" {
 variable "network_values" {
   description = "The network configuration for the ECS cluster, including VPC and subnets."
   type = object({
+    vpc_id             = string
     private_subnet_ids = map(string)
   })
 }

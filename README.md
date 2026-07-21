@@ -1,6 +1,6 @@
 # container-arch--aws-modules
 
-Módulos Terraform reutilizáveis para a arquitetura de containers na AWS (VPC, ECS, ECR, EFS), consumidos pelos repositórios `container-arch--aws-vpc`, `container-arch--aws-ecs-cluster` e `container-arch--aws-ecs-app`.
+Módulos Terraform reutilizáveis para a arquitetura de containers na AWS (VPC, ECS, ECR, EFS, SSM), consumidos pelos repositórios `container-arch--aws-vpc`, `container-arch--aws-ecs-cluster` e `container-arch--aws-ecs-app`.
 
 ## Módulos
 
@@ -11,6 +11,8 @@ Módulos Terraform reutilizáveis para a arquitetura de containers na AWS (VPC, 
 | [`ecs_service`](ecs_service/README.md) | Serviço ECS, task definition, target group, autoscaling e EFS mounts |
 | [`ecr_repository`](ecr_repository/README.md) | Repositório ECR (usado internamente por `ecs_service`) |
 | [`efs_storage`](efs_storage/README.md) | Sistema de arquivos EFS |
+| [`ssm_parameter_store`](ssm_parameter_store/README.md) | Parâmetro no SSM Parameter Store |
+| [`ssm_secrets_manager`](ssm_secrets_manager/README.md) | Segredo no AWS Secrets Manager |
 
 ## Versionamento
 

@@ -18,7 +18,7 @@ module "efs" {
 | Nome | Descrição | Tipo | Default |
 | --- | --- | --- | --- |
 | `service_name` | Nome do serviço ECS; vira parte do nome do EFS | `string` | — |
-| `network_values` | Output do módulo [`network`](../network) (`vpc_id`, `vpc_cidr_block`, `private_subnet_ids`, `public_subnet_ids`, `data_subnet_ids`) | `object` | — |
+| `network_values` | Output do repositório que usa o módulo [`vpc_network`](../vpc_network) (`vpc_id`, `private_subnet_ids`) | `object` | — |
 | `performance_mode` | Modo de performance do EFS | `string` | `"generalPurpose"` |
 | `throughput_mode` | Modo de throughput do EFS | `string` | `"bursting"` |
 

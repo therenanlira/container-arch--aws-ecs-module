@@ -38,6 +38,12 @@ module "ecs_service" {
 
   capabilities          = ["EC2"]
   environment_variables = [{ name = "FOO", value = "BAR" }]
+  secrets = [
+    {
+      name      = "DB_PASS"
+      valueFrom = module.ssm_parameter.arn
+    }
+  ]
 
   efs_volumes = [
     {
@@ -55,7 +61,7 @@ module "ecs_service" {
 
 | Nome | Descrição | Tipo | Default |
 | --- | --- | --- | --- |
-| `network_values` | Output do módulo [`network`](../network) (`vpc_id`, `private_subnet_ids`) | `object` | — |
+| `network_values` | Output do repositório que usa o módulo [`vpc_network`](../vpc_network) (`vpc_id`, `private_subnet_ids`) | `object` | — |
 | `project_name` | Nome do projeto | `string` | — |
 | `cluster_name` | Nome/ARN do cluster ECS ([`ecs_cluster`](../ecs_cluster)) | `string` | — |
 | `service_name` | Nome do serviço, container e repositório ECR | `string` | — |
@@ -74,7 +80,8 @@ module "ecs_service" {
 | `task_min` / `task_max` | Limites de tasks no autoscaling | `number` | `3` / `10` |
 | `scale_out_cpu` / `scale_in_cpu` | Configuração do step scaling por CPU (threshold, adjustment, etc) | `object` | ver `_variables.tf` |
 | `capabilities` | Deve conter `"EC2"` | `list(string)` | — |
-| `environment_variables` | Lista de `{name, value}` do container | `list(map(string))` | — |
+| `environment_variables` | Lista de `{name, value}` do container | `list(object)` | `[]` |
+| `secrets` | Lista de `{name, valueFrom}` — `valueFrom` é o ARN de um parâmetro/segredo (ex.: output `arn` de [`ssm_parameter_store`](../ssm_parameter_store) ou [`ssm_secrets_manager`](../ssm_secrets_manager)) | `list(object)` | `[]` |
 | `efs_volumes` | Lista de volumes EFS a montar (`volume_name`, `file_system_id`, `file_system_root`, `mount_point`, `read_only`) | `list(object)` | `[]` |
 
 ## Outputs

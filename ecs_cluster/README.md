@@ -43,7 +43,7 @@ module "ecs_cluster" {
 | --- | --- | --- | --- |
 | `project_name` | Nome do projeto, usado em tags e nomes de recursos | `string` | — |
 | `environment` | Ambiente de deploy | `string` | — |
-| `network_values` | Output do módulo [`network`](../network) (`vpc_id`, `vpc_cidr_block`, `private_subnet_ids`, `public_subnet_ids`, `data_subnet_ids`) | `object` | — |
+| `network_values` | Output do repositório que usa o módulo [`vpc_network`](../vpc_network) (`vpc_id`, `vpc_cidr_block`, `private_subnet_ids`, `public_subnet_ids`) | `object` | — |
 | `capacity_provider_strategies` | Lista com uma ou mais de `ON_DEMAND`, `SPOT`, `FARGATE`, `FARGATE_SPOT` | `list(string)` | `["ON_DEMAND", "SPOT"]` |
 | `ecs_autoscaling` | Map por capacity provider com `minimum`/`maximum`/`desired` | `map(object)` | — |
 | `ecs_ami` | AMI das instâncias ECS (apenas para providers EC2) | `string` | — |

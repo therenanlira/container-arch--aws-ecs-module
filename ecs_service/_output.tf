@@ -83,3 +83,7 @@ output "capabilities" {
 output "environment_variables" {
   value = var.environment_variables
 }
+
+output "efs_volumes" {
+  value = var.efs_volumes
+}

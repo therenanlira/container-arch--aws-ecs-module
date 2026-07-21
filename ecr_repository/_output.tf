@@ -4,6 +4,8 @@ output "service_name" {
   value = var.service_name
 }
 
+# ECR
+
 output "name" {
   value = aws_ecr_repository.main.name
 }

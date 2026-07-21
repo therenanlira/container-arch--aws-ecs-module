@@ -1,0 +1,29 @@
+# General
+
+variable "service_name" {
+  description = "The name of the ECS service."
+  type        = string
+}
+
+variable "network_values" {
+  description = "The network configuration for the ECS cluster, including VPC and subnets."
+  type = object({
+    vpc_id             = string
+    vpc_cidr_block     = string
+    private_subnet_ids = map(string)
+    public_subnet_ids  = map(string)
+    data_subnet_ids    = map(string)
+  })
+}
+
+variable "performance_mode" {
+  description = "EFS performance mode"
+  type        = string
+  default     = "generalPurpose"
+}
+
+variable "throughput_mode" {
+  description = "EFS throughput mode"
+  type        = string
+  default     = "bursting"
+}

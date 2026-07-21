@@ -8,7 +8,7 @@ resource "aws_vpc_endpoint" "these" {
   service_name      = "com.amazonaws.${data.aws_region.current.region}.${each.key}"
   route_table_ids   = [for rt in aws_route_table.private : rt.id]
 
-  tags = merge(local.tags, {
+  tags = {
     Name = "${local.name_prefix}-vpce-${each.key}"
-  })
+  }
 }

@@ -5,9 +5,9 @@ resource "aws_route_table" "private" {
 
   vpc_id = aws_vpc.main.id
 
-  tags = merge(local.tags, {
+  tags = {
     Name = "${local.name_prefix}-private-rt-${each.key}"
-  })
+  }
 }
 
 resource "aws_route" "private_internet_access" {
@@ -39,9 +39,9 @@ resource "aws_route_table" "public" {
 
   vpc_id = aws_vpc.main.id
 
-  tags = merge(local.tags, {
+  tags = {
     Name = "${local.name_prefix}-public-rt-${each.key}"
-  })
+  }
 }
 
 resource "aws_route" "public_internet_access" {
